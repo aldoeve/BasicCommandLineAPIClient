@@ -57,6 +57,5 @@ func (m Model) View() string {
 		inlineMode    = "inline mode"
 	)
 
-	return views.IntroSequence() +
-		HelpStyle.Render("\n\n  ctrl+b: switch modes • ctrl+z: suspend • ctrl+q: exit\n")
+	return views.IntroSequence() + HelpStyle.Render("\n\n  ctrl+b: switch modes • ctrl+z: suspend • ctrl+q: exit\n")
 }
