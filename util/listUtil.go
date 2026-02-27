@@ -11,3 +11,9 @@ func ListUpdate(list list.Model, msg tea.Msg) (list.Model, tea.Cmd) {
 	}
 	return list.Update(msg)
 }
+
+func ListDefaults(list list.Model) list.Model {
+	list.Title = "Desired Operation:"
+	list.InfiniteScrolling = true
+	return list
+}

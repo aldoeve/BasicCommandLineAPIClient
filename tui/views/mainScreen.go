@@ -21,10 +21,11 @@ func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 		item{title: "Display Recents"},
 		item{title: "Manual SQL"},
 	}
-	newList := list.New(items, list.NewDefaultDelegate(), 0, 0)
-	newList = util.HandleResizeofList(newList, isAltscreen)
-	newList.Title = "Desired Operation:"
-	return newList
+	choices := list.New(items, list.NewDefaultDelegate(), 0, 0)
+	choices = util.HandleResizeofList(choices, isAltscreen)
+	choices = util.ListDefaults(choices)
+
+	return choices
 }
 
 func FirstSelectionView(list list.Model) string {
