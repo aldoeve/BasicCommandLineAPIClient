@@ -41,7 +41,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
-	m.list, cmd = util.ListUpdate(m.list, msg)
+	m.list, cmd = util.HandleListUpdates(m.list, msg)
 
 	return m, cmd
 }

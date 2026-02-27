@@ -6,7 +6,7 @@ import (
 )
 
 // Updates the list given the list and tea msg recived.
-func ListUpdate(list list.Model, msg tea.Msg) (list.Model, tea.Cmd) {
+func HandleListUpdates(list list.Model, msg tea.Msg) (list.Model, tea.Cmd) {
 	if len(list.Items()) == 0 {
 		return list, nil
 	}
@@ -14,8 +14,12 @@ func ListUpdate(list list.Model, msg tea.Msg) (list.Model, tea.Cmd) {
 }
 
 // Sets desired defaults of a list like the title and infinate scrolling.
-func ListDefaults(list list.Model) list.Model {
+func SetListDefaults(list list.Model) list.Model {
 	list.Title = "Desired Operation:"
 	list.InfiniteScrolling = true
+	list.SetShowHelp(false)
+	list.SetShowPagination(false)
+	list.SetShowFilter(false)
+	list.SetShowStatusBar(false)
 	return list
 }

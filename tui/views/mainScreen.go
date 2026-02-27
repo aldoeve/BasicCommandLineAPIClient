@@ -24,7 +24,7 @@ func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 	}
 	choices := list.New(items, list.NewDefaultDelegate(), 0, 0)
 	choices = util.HandleResizeofList(choices, isAltscreen)
-	choices = util.ListDefaults(choices)
+	choices = util.SetListDefaults(choices)
 
 	return choices
 }
