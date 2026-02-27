@@ -1,3 +1,4 @@
+// Package util provides utility functions that help build and modify basic components of the application.
 package util
 
 import (
@@ -7,6 +8,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+// Dumps logging info to the given filename.
 func dump(fileName string) {
 	f, err := tea.LogToFile(fileName+".log", "debug")
 	if err != nil {

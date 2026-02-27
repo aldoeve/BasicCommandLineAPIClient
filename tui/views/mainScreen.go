@@ -14,6 +14,7 @@ func (i item) Title() string       { return i.title }
 func (i item) Description() string { return "" }
 func (i item) FilterValue() string { return i.title }
 
+// Returns the first list of the application.
 func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 	items := []list.Item{
 		item{title: "Paste & Fire"},
@@ -28,6 +29,7 @@ func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 	return choices
 }
 
+// Returns first view after the intro screen.
 func FirstSelectionView(list list.Model) string {
 	return list.View()
 }

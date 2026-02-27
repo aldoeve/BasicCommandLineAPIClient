@@ -10,6 +10,7 @@ import (
 	"BCLAC/styles"
 )
 
+// Returns a newly resized list based on the terminal size.
 func HandleResizeofList(list list.Model, isAltscreen bool) list.Model {
 	if len(list.Items()) == 0 {
 		return list
@@ -25,6 +26,7 @@ func HandleResizeofList(list list.Model, isAltscreen bool) list.Model {
 	return list
 }
 
+// Returns terminal sizes.
 func GetTerminalSize() (int, int) {
 	width, height, err := term.GetSize(os.Stdout.Fd())
 	if err != nil {

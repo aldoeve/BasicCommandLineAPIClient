@@ -1,3 +1,4 @@
+// Package main is where the application is spun up from.
 package main
 
 import (

@@ -1,3 +1,4 @@
+// Package tui holds the main logic to the application.
 package tui
 
 import (

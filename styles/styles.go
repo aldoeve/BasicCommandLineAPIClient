@@ -1,3 +1,4 @@
+// Package styles stores the common style used throughout the application.
 package styles
 
 import "github.com/charmbracelet/lipgloss"
