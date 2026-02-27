@@ -14,15 +14,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.suspending = false
 		return m, nil
 	case tea.WindowSizeMsg:
-		m.list = util.HandleResize(m.list)
-		return m, nil
+		m.list = util.HandleResizeofList(m.list, m.altscreen)
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "enter", "right":
 			m.state = enums.MAIN_VIEW
-			cmd := clearScreenInAltMode(m.altscreen)
-			m.list = views.InitiateFirstSelectionList()
-			return m, cmd
+			//cmd := clearScreenInAltMode(m.altscreen)
+			m.list = views.InitiateFirstSelectionList(m.altscreen)
+			return m, nil //cmd
 		case "ctrl+q", "esc":
 			m.state = enums.ENDING
 			return m, tea.Quit
@@ -40,7 +39,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, cmd
 		}
 	}
-	return m, nil
+
+	var cmd tea.Cmd
+	m.list, cmd = util.ListUpdate(m.list, msg)
+
+	return m, cmd
 }
 
 func clearScreenInAltMode(isAltScreen bool) tea.Cmd {
