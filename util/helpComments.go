@@ -11,5 +11,5 @@ func AppCommands() string {
 
 // Returns a string about keys that the user can use to navigate the application.
 func NavigationHelp() string {
-	return styles.HelpStyle.Render("\n\n Use the arrows to navigate • Enter/Right arrow to confirm selection • Left arrow to return\n")
+	return styles.HelpStyle.Render("Use the arrows to navigate • Enter/Right arrow to confirm selection • Left arrow to return\n")
 }
