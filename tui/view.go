@@ -15,6 +15,14 @@ func (m Model) View() string {
 	case enums.MAIN_VIEW:
 		m.list.View()
 		return views.FirstSelectionView(m.list) + util.NavigationHelp()
+	case enums.PASTE_FIRE:
+		return "Under Maintinence"
+	case enums.QUICK_BUILD:
+		return "Under Maintinence"
+	case enums.RECENTS:
+		return "Under Maintinence"
+	case enums.MANUAL:
+		return "Under Maintinence"
 	case enums.ENDING:
 		return "BYE!\n"
 	default:

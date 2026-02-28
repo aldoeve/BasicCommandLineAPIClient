@@ -3,9 +3,11 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 
 	"BCLAC/enums"
+	"BCLAC/util"
 )
 
 type Model struct {
@@ -13,6 +15,13 @@ type Model struct {
 	altscreen  bool
 	suspending bool
 	list       list.Model
+	textInput  textinput.Model
+}
+
+func (m Model) InitalModel() Model {
+	ti := textinput.New()
+	ti = util.SetInputTextDefaults(ti)
+	return Model{textInput: ti}
 }
 
 func (m Model) Init() tea.Cmd {
