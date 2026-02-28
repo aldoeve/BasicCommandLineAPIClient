@@ -42,7 +42,6 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		if isUserInputNeeded(m.state) {
 			m.textInput, cmd = m.textInput.Update(msg)
-			cmd = tea.Batch(textinput.Blink, cmd)
 			return m, cmd
 		}
 	}
@@ -72,6 +71,8 @@ func handleForwardTravel(m *Model) (*Model, tea.Cmd) {
 		if m.state == enums.PASTE_FIRE {
 			cmd = textinput.Blink
 		}
+	case enums.PASTE_FIRE:
+		m.state = enums.FIRE_N_SHOW_HTTP
 	}
 
 	return m, cmd
@@ -86,6 +87,9 @@ func handleBackTravel(m *Model) (*Model, tea.Cmd) {
 	case enums.PASTE_FIRE, enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
 		m.state = enums.MAIN_VIEW
 		m.list = views.InitiateFirstSelectionList(m.altscreen)
+		m.textInput.Reset()
+	case enums.FIRE_N_SHOW_HTTP:
+		m.state = enums.PASTE_FIRE
 		m.textInput.Reset()
 	}
 	return m, cmd
