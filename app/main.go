@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	if _, err := tea.NewProgram(tui.Model{}).Run(); err != nil {
+	if _, err := tea.NewProgram(tui.InitalModel()).Run(); err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}

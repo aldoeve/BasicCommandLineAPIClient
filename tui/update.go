@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 
 	"BCLAC/enums"
@@ -8,7 +9,7 @@ import (
 	"BCLAC/util"
 )
 
-func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	switch msg := msg.(type) {
 	case tea.ResumeMsg:
@@ -39,6 +40,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.altscreen = !m.altscreen
 			return m, cmd
 		}
+		if isUserInputNeeded(m.state) {
+			m.textInput, cmd = m.textInput.Update(msg)
+			cmd = tea.Batch(textinput.Blink, cmd)
+			return m, cmd
+		}
 	}
 
 	m.list, cmd = util.HandleListUpdates(m.list, msg)
@@ -53,7 +59,8 @@ func clearScreenInAltMode(isAltScreen bool) tea.Cmd {
 	return nil
 }
 
-func handleForwardTravel(m Model) (Model, tea.Cmd) {
+// Knows how to move to the next appropriate state.
+func handleForwardTravel(m *Model) (*Model, tea.Cmd) {
 	var cmd tea.Cmd
 	switch m.state {
 	case enums.INTRO:
@@ -62,14 +69,16 @@ func handleForwardTravel(m Model) (Model, tea.Cmd) {
 		cmd = nil
 	case enums.MAIN_VIEW:
 		m.state = views.ReturnNextStateFromMainSelection(uint(m.list.Index()))
-		cmd = nil
+		if m.state == enums.PASTE_FIRE {
+			cmd = textinput.Blink
+		}
 	}
 
 	return m, cmd
 }
 
-func handleBackTravel(m Model) (Model, tea.Cmd) {
-	m.list.Index()
+// Figures out how to move back from certain states.
+func handleBackTravel(m *Model) (*Model, tea.Cmd) {
 	var cmd tea.Cmd
 	switch m.state {
 	case enums.INTRO, enums.MAIN_VIEW:
@@ -77,6 +86,11 @@ func handleBackTravel(m Model) (Model, tea.Cmd) {
 	case enums.PASTE_FIRE, enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
 		m.state = enums.MAIN_VIEW
 		m.list = views.InitiateFirstSelectionList(m.altscreen)
+		m.textInput.Reset()
 	}
 	return m, cmd
+}
+
+func isUserInputNeeded(state enums.State) bool {
+	return state == (enums.PASTE_FIRE)
 }

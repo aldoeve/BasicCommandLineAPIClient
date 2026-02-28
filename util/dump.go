@@ -9,11 +9,13 @@ import (
 )
 
 // Dumps logging info to the given filename.
-func dump(fileName string) {
+func Dump(fileName string, data string) {
 	f, err := tea.LogToFile(fileName+".log", "debug")
 	if err != nil {
 		fmt.Println("fatal:", err)
 		os.Exit(1)
 	}
+	fmt.Fprint(f, data)
+
 	defer f.Close()
 }

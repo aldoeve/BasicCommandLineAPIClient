@@ -18,12 +18,11 @@ type Model struct {
 	textInput  textinput.Model
 }
 
-func (m Model) InitalModel() Model {
+func InitalModel() *Model {
 	ti := textinput.New()
-	ti = util.SetInputTextDefaults(ti)
-	return Model{textInput: ti}
+	return &Model{textInput: util.SetInputTextDefaults(ti)}
 }
 
 func (m Model) Init() tea.Cmd {
-	return nil
+	return textinput.Blink
 }

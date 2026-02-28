@@ -13,10 +13,9 @@ func (m Model) View() string {
 
 	switch m.state {
 	case enums.MAIN_VIEW:
-		m.list.View()
 		return views.FirstSelectionView(m.list) + util.NavigationHelp()
 	case enums.PASTE_FIRE:
-		return "Under Maintinence"
+		return views.PasteNFireView(m.textInput.View())
 	case enums.QUICK_BUILD:
 		return "Under Maintinence"
 	case enums.RECENTS:
