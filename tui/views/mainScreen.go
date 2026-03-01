@@ -36,7 +36,7 @@ func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 
 func ReturnNextStateFromMainSelection(index uint) enums.State {
 	options := [MAINSCREEN_OpTIONS_COUNT]enums.State{
-		enums.PASTE_FIRE,
+		enums.PASTE,
 		enums.QUICK_BUILD,
 		enums.RECENTS,
 		enums.MANUAL,

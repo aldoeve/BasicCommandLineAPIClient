@@ -19,10 +19,10 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "enter", "right":
-			m, cmd = handleForwardTravel(m)
+			cmd = handleForwardTravel(m)
 			return m, cmd
 		case "left":
-			m, cmd = handleBackTravel(m)
+			cmd = handleBackTravel(m)
 			return m, cmd
 		case "ctrl+q", "esc":
 			m.state = enums.ENDING
@@ -39,13 +39,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.altscreen = !m.altscreen
 			return m, cmd
 		}
-		if isUserInputNeeded(m.state) {
-			m.textInput, cmd = m.textInput.Update(msg)
-			return m, cmd
-		}
 	}
 
-	m.list, cmd = util.HandleListUpdates(m.list, msg)
+	cmd = AllowListAndTextInputUpdates(m, msg, cmd)
 
 	return m, cmd
 }
@@ -58,7 +54,7 @@ func clearScreenInAltMode(isAltScreen bool) tea.Cmd {
 }
 
 // Knows how to move to the next appropriate state.
-func handleForwardTravel(m *Model) (*Model, tea.Cmd) {
+func handleForwardTravel(m *Model) tea.Cmd {
 	var cmd tea.Cmd
 	switch m.state {
 	case enums.INTRO:
@@ -67,33 +63,46 @@ func handleForwardTravel(m *Model) (*Model, tea.Cmd) {
 		cmd = nil
 	case enums.MAIN_VIEW:
 		m.state = views.ReturnNextStateFromMainSelection(uint(m.list.Index()))
-		if m.state == enums.PASTE_FIRE {
+		if m.state == enums.PASTE {
 			cmd = m.textInput.Cursor.BlinkCmd()
 		}
-	case enums.PASTE_FIRE:
+	case enums.PASTE:
 		m.state = enums.FIRE_N_SHOW_HTTP
 	}
 
-	return m, cmd
+	return cmd
 }
 
 // Figures out how to move back from certain states.
-func handleBackTravel(m *Model) (*Model, tea.Cmd) {
+func handleBackTravel(m *Model) tea.Cmd {
 	var cmd tea.Cmd
 	switch m.state {
 	case enums.INTRO, enums.MAIN_VIEW:
 		cmd = nil
-	case enums.PASTE_FIRE, enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
+	case enums.PASTE, enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
 		m.state = enums.MAIN_VIEW
 		m.list = views.InitiateFirstSelectionList(m.altscreen)
 		m.textInput.Reset()
 	case enums.FIRE_N_SHOW_HTTP:
-		m.state = enums.PASTE_FIRE
+		m.state = enums.PASTE
 		m.textInput.Reset()
 	}
-	return m, cmd
+	return cmd
 }
 
-func isUserInputNeeded(state enums.State) bool {
-	return state == (enums.PASTE_FIRE)
+// Looks at current state to mutate lists and input fields.
+func AllowListAndTextInputUpdates(m *Model, msg tea.Msg, cmd tea.Cmd) tea.Cmd {
+	var toBatch []tea.Cmd
+	toBatch = append(toBatch, cmd)
+
+	switch m.state {
+	case enums.MAIN_VIEW:
+		m.list, cmd = util.HandleListUpdates(m.list, msg)
+		toBatch = append(toBatch, cmd)
+	case enums.PASTE:
+		m.textInput, cmd = m.textInput.Update(msg)
+		toBatch = append(toBatch, cmd)
+	}
+
+	return tea.Batch(toBatch...)
 }

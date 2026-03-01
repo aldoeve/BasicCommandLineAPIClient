@@ -6,7 +6,7 @@ type State uint
 const (
 	INTRO = iota
 	MAIN_VIEW
-	PASTE_FIRE
+	PASTE
 	QUICK_BUILD
 	RECENTS
 	MANUAL

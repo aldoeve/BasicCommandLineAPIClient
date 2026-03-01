@@ -25,6 +25,6 @@ func InitalModel() *Model {
 	return &Model{textInput: util.SetInputTextDefaults(ti)}
 }
 
-func (m Model) Init() tea.Cmd {
-	return nil
+func (m *Model) Init() tea.Cmd {
+	return m.textInput.Cursor.BlinkCmd()
 }

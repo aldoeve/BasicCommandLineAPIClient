@@ -8,7 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m Model) View() string {
+func (m *Model) View() string {
 	if m.suspending {
 		return ""
 	}
@@ -16,8 +16,8 @@ func (m Model) View() string {
 	switch m.state {
 	case enums.MAIN_VIEW:
 		return lipgloss.JoinVertical(lipgloss.Top, views.FirstSelectionView(m.list), util.NavigationHelp())
-	case enums.PASTE_FIRE:
-		return lipgloss.JoinVertical(lipgloss.Top, views.PasteNFireView(m.textInput.View()), util.NavigationHelp())
+	case enums.PASTE:
+		return lipgloss.JoinVertical(lipgloss.Top, views.PasteView(m.textInput.View()), util.NavigationHelp())
 	case enums.FIRE_N_SHOW_HTTP:
 		return lipgloss.JoinVertical(lipgloss.Top, views.HttpView(m.textInput.View()), util.NavigationHelp())
 	case enums.QUICK_BUILD:
