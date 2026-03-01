@@ -3,6 +3,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 
@@ -16,6 +17,7 @@ type Model struct {
 	suspending bool
 	list       list.Model
 	textInput  textinput.Model
+	spinner    spinner.Model
 }
 
 func InitalModel() *Model {
@@ -24,5 +26,5 @@ func InitalModel() *Model {
 }
 
 func (m Model) Init() tea.Cmd {
-	return textinput.Blink
+	return nil
 }

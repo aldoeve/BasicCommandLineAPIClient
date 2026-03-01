@@ -1,7 +1,6 @@
 package tui
 
 import (
-	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 
 	"BCLAC/enums"
@@ -69,7 +68,7 @@ func handleForwardTravel(m *Model) (*Model, tea.Cmd) {
 	case enums.MAIN_VIEW:
 		m.state = views.ReturnNextStateFromMainSelection(uint(m.list.Index()))
 		if m.state == enums.PASTE_FIRE {
-			cmd = textinput.Blink
+			cmd = m.textInput.Cursor.BlinkCmd()
 		}
 	case enums.PASTE_FIRE:
 		m.state = enums.FIRE_N_SHOW_HTTP
