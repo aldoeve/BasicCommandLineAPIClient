@@ -63,6 +63,9 @@ func handleForwardTravel(m *Model) tea.Cmd {
 		cmd = nil
 	case enums.MAIN_VIEW:
 		m.state = views.ReturnNextStateFromMainSelection(uint(m.list.Index()))
+		if m.state == enums.QUICK_BUILD {
+			//set up quickbuild list
+		}
 	case enums.QUICK_BUILD:
 		m.state = enums.PASTE
 		cmd = m.textInput.Cursor.BlinkCmd()
@@ -87,7 +90,7 @@ func handleBackTravel(m *Model) tea.Cmd {
 		m.textInput.Reset()
 	case enums.PASTE:
 		m.state = enums.QUICK_BUILD
-
+		//inistate quick build list
 		m.textInput.Reset()
 	case enums.FIRE_N_SHOW_HTTP:
 		m.state = enums.PASTE
@@ -102,7 +105,7 @@ func AllowListAndTextInputUpdates(m *Model, msg tea.Msg, cmd tea.Cmd) tea.Cmd {
 	toBatch = append(toBatch, cmd)
 
 	switch m.state {
-	case enums.MAIN_VIEW:
+	case enums.MAIN_VIEW, enums.QUICK_BUILD:
 		m.list, cmd = util.HandleListUpdates(m.list, msg)
 		toBatch = append(toBatch, cmd)
 	case enums.PASTE:
