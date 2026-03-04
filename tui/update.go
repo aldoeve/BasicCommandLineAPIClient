@@ -63,11 +63,13 @@ func handleForwardTravel(m *Model) tea.Cmd {
 		cmd = nil
 	case enums.MAIN_VIEW:
 		m.state = views.ReturnNextStateFromMainSelection(uint(m.list.Index()))
-		if m.state == enums.PASTE {
-			cmd = m.textInput.Cursor.BlinkCmd()
-		}
+	case enums.QUICK_BUILD:
+		m.state = enums.PASTE
+		cmd = m.textInput.Cursor.BlinkCmd()
 	case enums.PASTE:
 		m.state = enums.FIRE_N_SHOW_HTTP
+		cmd = tea.Batch(m.spinner.Tick)
+
 	}
 
 	return cmd
@@ -79,9 +81,13 @@ func handleBackTravel(m *Model) tea.Cmd {
 	switch m.state {
 	case enums.INTRO, enums.MAIN_VIEW:
 		cmd = nil
-	case enums.PASTE, enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
+	case enums.QUICK_BUILD, enums.RECENTS, enums.MANUAL:
 		m.state = enums.MAIN_VIEW
 		m.list = views.InitiateFirstSelectionList(m.altscreen)
+		m.textInput.Reset()
+	case enums.PASTE:
+		m.state = enums.QUICK_BUILD
+
 		m.textInput.Reset()
 	case enums.FIRE_N_SHOW_HTTP:
 		m.state = enums.PASTE
@@ -101,6 +107,9 @@ func AllowListAndTextInputUpdates(m *Model, msg tea.Msg, cmd tea.Cmd) tea.Cmd {
 		toBatch = append(toBatch, cmd)
 	case enums.PASTE:
 		m.textInput, cmd = m.textInput.Update(msg)
+		toBatch = append(toBatch, cmd)
+	case enums.FIRE_N_SHOW_HTTP:
+		m.spinner, cmd = m.spinner.Update(msg)
 		toBatch = append(toBatch, cmd)
 	}
 

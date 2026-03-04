@@ -22,9 +22,13 @@ type Model struct {
 
 func InitalModel() *Model {
 	ti := textinput.New()
-	return &Model{textInput: util.SetInputTextDefaults(ti)}
+	util.SetInputTextDefaults(&ti)
+	s := spinner.New()
+	util.SetSpinnerDefaults(&s)
+	return &Model{textInput: ti, spinner: s}
 }
 
 func (m *Model) Init() tea.Cmd {
-	return m.textInput.Cursor.BlinkCmd()
+	cmds := tea.Batch(textinput.Blink, m.spinner.Tick)
+	return cmds
 }

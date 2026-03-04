@@ -19,7 +19,7 @@ func (m *Model) View() string {
 	case enums.PASTE:
 		return lipgloss.JoinVertical(lipgloss.Top, views.PasteView(m.textInput.View()), util.NavigationHelp())
 	case enums.FIRE_N_SHOW_HTTP:
-		return lipgloss.JoinVertical(lipgloss.Top, views.HttpView(m.textInput.Value()), util.NavigationHelp())
+		return lipgloss.JoinVertical(lipgloss.Top, views.HttpView(m.textInput.Value(), &m.spinner), util.NavigationHelp())
 	case enums.QUICK_BUILD:
 		return lipgloss.JoinVertical(lipgloss.Top, "Under Maintinence", util.NavigationHelp())
 	case enums.RECENTS:

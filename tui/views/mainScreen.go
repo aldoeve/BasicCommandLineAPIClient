@@ -16,13 +16,12 @@ func (i item) Description() string { return "" }
 func (i item) FilterValue() string { return i.title }
 
 const (
-	MAINSCREEN_OpTIONS_COUNT = 4
+	MAINSCREEN_OPTIONS_COUNT = 3
 )
 
 // Returns the first list of the application.
 func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 	items := []list.Item{
-		item{title: "Paste & Fire"},
 		item{title: "Quick Build"},
 		item{title: "Display Recents"},
 		item{title: "Manual SQL"},
@@ -35,13 +34,12 @@ func InitiateFirstSelectionList(isAltscreen bool) list.Model {
 }
 
 func ReturnNextStateFromMainSelection(index uint) enums.State {
-	options := [MAINSCREEN_OpTIONS_COUNT]enums.State{
-		enums.PASTE,
+	options := [MAINSCREEN_OPTIONS_COUNT]enums.State{
 		enums.QUICK_BUILD,
 		enums.RECENTS,
 		enums.MANUAL,
 	}
-	if index >= MAINSCREEN_OpTIONS_COUNT {
+	if index >= MAINSCREEN_OPTIONS_COUNT {
 		index = 0
 	}
 	return options[index]
